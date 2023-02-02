@@ -1,0 +1,74 @@
+.root {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.formWrapper {
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    padding: 40px 40px 56px 40px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .form {
+        width: 288px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .headerText {
+            margin-bottom: 22px;
+
+            font-weight: 700;
+            font-size: 32px;
+            line-height: 44px;
+        }
+
+        .textInput {
+            width: 100%;
+
+            &:not(:first-child) {
+                margin-top: 12px;
+            }
+        }
+
+        .signInButton {
+            width: 288px;
+            margin-top: 60px;
+        }
+    }
+}
+
+.signUp {
+    margin-top: 18px;
+
+    & * {
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 100%;
+        color: #A5A7BD;
+    }
+
+    .dontHaveAnAccount {
+        display: inline;
+
+        &::after {
+            content: ' '
+        }
+    }
+
+    .signUpLink {
+        color: var(--primaryBlue);
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+    }
+}

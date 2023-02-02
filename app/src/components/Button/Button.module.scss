@@ -1,0 +1,18 @@
+.button {
+  box-sizing: border-box;
+  height: 56px;
+
+  border: none;
+
+  background-color: var(--primaryBlue);
+  border-radius: 8px;
+  cursor: pointer;
+
+  & {
+    color: var(--white);
+    font-size: 17px;
+    font-family: 'Source Sans Pro', sans-serif;
+    line-height: 20px;
+    font-weight: 500;
+  }
+}
