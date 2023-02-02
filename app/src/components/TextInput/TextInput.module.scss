@@ -1,20 +1,58 @@
-.input {
-  box-sizing: border-box;
-  height: 56px;
-  padding: 16px;
+.root {
+  --input-height: 56px;
 
-  border: none;
-  border-radius: 8px;
-  background-color: #F3F5FA;
+  .inputWrapper {
+    position: relative;
 
-  font-weight: 400;
-  font-size: 17px;
-  line-height: 23px;
-  letter-spacing: -0.40px;
-  color: #000000;
+    display: flex;
+    align-items: center;
+  }
 
-  &::placeholder {
-    color: var(--primaryGrey);
-    font-weight: 300;
+  .validationRules {
+    margin-top: 8px;
+    padding-left: 8px;
+  }
+
+  .showPasswordIcon {
+    position: absolute;
+    right: 10px;
+
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    background-color: var(--primaryBlue);
+  }
+
+  .input {
+    box-sizing: border-box;
+    height: var(--input-height);
+    width: 100%;
+    padding: 16px;
+
+    border: none;
+    border-radius: 8px;
+    background-color: #F3F5FA;
+
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 23px;
+    letter-spacing: -0.40px;
+    color: #000000;
+
+    transition: .2s ease;
+    will-change: border;
+
+    &::placeholder {
+      color: var(--primaryGrey);
+      font-weight: 300;
+    }
+
+    &.error {
+      border-color: var(--primaryRed);
+      border-width: 1px;
+      border-style: solid;
+    }
   }
 }

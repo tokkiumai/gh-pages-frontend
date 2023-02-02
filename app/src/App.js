@@ -1,23 +1,108 @@
+import { useState } from 'react'
 import styles from './App.module.scss'
+
 import TextInput from "./components/TextInput";
 import Button from "./components/Button";
 
+import {normalizePassword, validatePassword, PASSWORD_MIN_LENGTH, validateEmail} from "./inputsValidation";
+import Rules from "./components/Rules";
+
 function App() {
+  const [formState, setFormState] = useState({
+    email: '',
+    emailError: true,
+    password: '',
+    passwordError: true,
+  })
+  const [errors, setErrors] = useState({ email: false, password: false })
+
+  function resetErrorClosure(name) {
+    return () => {
+      setErrors(state => ({ ...state, [name]: false }))
+    }
+  }
+
+  function handleEmailChange(event) {
+    const value = event.target.value
+    const isValid = validateEmail(value)
+
+    setFormState(state => ({ ...state, email: value, emailError: !isValid }))
+  }
+
+  function handlePasswordChange(event) {
+    const value = normalizePassword(event.target.value)
+    const { isLowerCase, isUpperCase, isNumber, isMinLength } = validatePassword(value)
+
+    setFormState(state => ({
+      ...state,
+      password: value,
+      passwordError: !isLowerCase || !isUpperCase || !isNumber || !isMinLength
+    }))
+  }
+
+  function onSubmit(event) {
+    event.preventDefault()
+
+    const { email, password } = formState
+
+    if (formState.passwordError && formState.emailError) {
+      setErrors({ email: formState.emailError, password: formState.passwordError })
+      return
+    }
+
+    const data = new FormData()
+    data.append('email', email)
+    data.append('password', password)
+
+    // POST request
+  }
+
+  function renderRules() {
+    const { isLowerCase, isUpperCase, isNumber, isMinLength } = validatePassword(formState.password)
+    const rules = [
+      { name: 'Contains lower case letters', checked: isLowerCase },
+      { name: 'Contains upper case letters', checked: isUpperCase },
+      { name: 'Contains numbers', checked: isNumber },
+      { name: `More than ${PASSWORD_MIN_LENGTH} length`, checked: isMinLength },
+    ]
+
+    return (
+      <Rules entries={rules} />
+    )
+  }
+
   return (
     <div className={styles.root}>
 
       <div className={styles.formWrapper}>
-        <form className={styles.form}>
+        <form className={styles.form} onSubmit={onSubmit}>
           <p className={styles.headerText}>Sign in</p>
 
-          <TextInput className={styles.textInput} placeholder="Email" />
-          <TextInput className={styles.textInput} placeholder="Password" />
+          <TextInput
+            className={styles.textInput}
+            value={formState.email}
+            onChange={handleEmailChange}
+            placeholder="Email"
+            type="email"
+            hasError={errors.email}
+            onFocus={resetErrorClosure('email')}
+          />
+          <TextInput
+            className={styles.textInput}
+            value={formState.password}
+            onChange={handlePasswordChange}
+            ValidationComponent={renderRules()}
+            placeholder="Password"
+            type="password"
+            hasError={errors.password}
+            onFocus={resetErrorClosure('password')}
+          />
 
           {/* Password rules */}
 
           {/* OAuth's icons in-line section */}
 
-          <Button className={styles.signInButton}>
+          <Button className={styles.signInButton} onClick={onSubmit}>
             Sign in
           </Button>
         </form>
