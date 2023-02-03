@@ -1,7 +1,19 @@
 import { useState, isValidElement } from 'react'
 import styles from './TextInput.module.scss'
 
-function TextInput({ type, value, placeholder, onChange = () => {}, onFocus, hasError, ValidationComponent, className }) {
+function TextInput({
+  type,
+  value,
+  placeholder,
+  required = false,
+  pattern,
+  minLength,
+  onChange = () => {},
+  onFocus,
+  hasError,
+  ValidationComponent,
+  className
+}) {
   const [showPassword, setShowPassword] = useState(false)
   const [inputHovered, setInputHovered] = useState(false)
 
@@ -31,13 +43,16 @@ function TextInput({ type, value, placeholder, onChange = () => {}, onFocus, has
         <input
           className={`${styles.input} ${hasError ? styles.error : ''}`}
           placeholder={placeholder}
+          required={required}
+          pattern={pattern}
+          minLength={minLength}
           onChange={handleChange}
           onFocus={onFocus}
           value={value}
           type={showPassword ? 'text' : type}
         />
         {type === 'password' && shouldShowPasswordToggleIcon && (
-          <button className={styles.showPasswordIcon} onClick={toggleShowPassword} />
+          <div className={styles.showPasswordIcon} onClick={toggleShowPassword} tabIndex="0" />
         )}
       </div>
       {isValidElement(ValidationComponent) && <div className={styles.validationRules}>{ValidationComponent}</div>}

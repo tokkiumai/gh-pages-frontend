@@ -41,8 +41,7 @@
     letter-spacing: -0.40px;
     color: #000000;
 
-    transition: .2s ease;
-    will-change: border;
+    transition: border .1s ease-out;
 
     &::placeholder {
       color: var(--primaryGrey);

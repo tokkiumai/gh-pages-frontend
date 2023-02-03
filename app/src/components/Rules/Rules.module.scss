@@ -1,9 +1,8 @@
 .root {
   .rule {
-    opacity: 0.4;
+    opacity: 0.3;
 
     transition: .2s ease-in-out;
-    will-change: opacity;
 
     &.name {
       font-weight: 500;

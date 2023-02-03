@@ -4,7 +4,13 @@ import styles from './App.module.scss'
 import TextInput from "./components/TextInput";
 import Button from "./components/Button";
 
-import {normalizePassword, validatePassword, PASSWORD_MIN_LENGTH, validateEmail} from "./inputsValidation";
+import {
+  normalizePassword,
+  validatePassword,
+  PASSWORD_MIN_LENGTH,
+  validateEmail,
+  EmailRegExp
+} from "./inputsValidation";
 import Rules from "./components/Rules";
 
 function App() {
@@ -16,17 +22,12 @@ function App() {
   })
   const [errors, setErrors] = useState({ email: false, password: false })
 
-  function resetErrorClosure(name) {
-    return () => {
-      setErrors(state => ({ ...state, [name]: false }))
-    }
-  }
-
   function handleEmailChange(event) {
     const value = event.target.value
     const isValid = validateEmail(value)
 
     setFormState(state => ({ ...state, email: value, emailError: !isValid }))
+    setErrors(state => ({ ...state, email: false }))
   }
 
   function handlePasswordChange(event) {
@@ -38,6 +39,7 @@ function App() {
       password: value,
       passwordError: !isLowerCase || !isUpperCase || !isNumber || !isMinLength
     }))
+    setErrors(state => ({ ...state, password: false }))
   }
 
   function onSubmit(event) {
@@ -82,20 +84,22 @@ function App() {
             className={styles.textInput}
             value={formState.email}
             onChange={handleEmailChange}
+            required
+            pattern={EmailRegExp}
             placeholder="Email"
             type="email"
             hasError={errors.email}
-            onFocus={resetErrorClosure('email')}
           />
           <TextInput
             className={styles.textInput}
             value={formState.password}
             onChange={handlePasswordChange}
+            required
+            minLength={PASSWORD_MIN_LENGTH}
             ValidationComponent={renderRules()}
             placeholder="Password"
             type="password"
             hasError={errors.password}
-            onFocus={resetErrorClosure('password')}
           />
 
           {/* Password rules */}
